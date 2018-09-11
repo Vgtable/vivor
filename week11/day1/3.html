@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+  <input type="text" id="input">
+  <input type="button" id="btn" value="btn">
+  <select class="" name="">
+    <option value="A">A</option>
+    <option value="B">B</option>
+  </select>
+</body>
+
+<script type="text/javascript">
+  function readFormData(){
+    console.log("input value = ",$("input").eq(0).val());
+    console.log("select value = ",$("select").val());
+  }
+
+  $("input")[1].onclick = readFormData;
+  $("input").css({
+    "background-color":"yellow",
+    "color":"red"
+  })
+</script>
+</html>

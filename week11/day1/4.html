@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<style>
+.menu{
+  font-size:14px;
+  height:34px;
+  line-height: 34px;
+  background-color: #333;
+  color:#fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px -1px #ccc;
+  text-align: center;
+  width:80px;
+  display: none;
+  position: absolute;
+  left:0;
+  top:0;
+}
+</style>
+</head>
+<body>
+  <form action="#">
+    <input type="text" value="大佬">
+    <input type="submit" value="提交">
+    <input type="button" value="按钮">
+  </form>
+<div class="menu">
+  呵呵呵
+</div>
+</body>
+<script type="text/javascript">
+  $("input").eq(0)
+  .focus(event=>console.log("input 得到焦点"))
+  .blur(event=>console.log("inpit 失去焦点"))
+  .change(event=>console.log("input 变成了"+$("input").val()))
+
+  $("form")
+  .submit(event=>{
+    event.preventDefault();
+    console.log(event.type);
+  })
+
+  $("input").eq(1)
+  .click(event=>console.log(event.type)).dblclick(event=>console.log(event.type))
+
+  $("input").eq(2)
+  .css({
+    "width":"400px",
+    "line-height":"400px"
+  })
+  .keydown(event=>{
+    console.log("keydown",event.which);
+  })
+  .keyup(event=>{
+    console.log("keyup",event.which);
+  })
+  .contextmenu(event=>{
+    event.preventDefault()
+    let left = event.pageX;
+    let top = event.pageY;
+    $(".menu").css({
+      "display":"block",
+      "left":left,
+      "top":top
+    })
+
+    setTimeout(function(){
+      $(".menu").css({"display":"none"})
+    },1000)
+  })
+
+</script>
+</html>
