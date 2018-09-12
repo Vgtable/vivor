@@ -4,7 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');//req.body
 var logger = require('morgan');
-
+var fs = require("fs");
+var util = require("util");
+var writeFile = util.promisify(fs.writeFile);
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -20,19 +22,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post("/get_json",function(req,res){
-  req.body;
-  res.send({name:"ccc",qq:"103345223",tel:"母鸡",qqa:req.body})
+const db = require("./db");
+app.get("/init_data",function(req,res){
+  res.send(db);
 })
-
-app.get("/get_type",function(req,res){
-  res.send(req.query);
-})
-app.get("/load_html",function(req,res){
-  res.send(`
-    <h1>123</h1>
-    <p>2222222</p>
-  `)
+app.post("/",async function(req,res){
+  db.push(req.body);
+  await writeFile(__dirname+"/db.json",JSON.stringify(db));
+  res.send();
 })
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,26 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    .content {
+      margin-bottom: 20px;
+      width: 100%;
+      height: 300px;
+      border: 1px solid #666;
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      color: #666;
+      overflow: scroll;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      border: 1px solid #666;
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      color: #666;
+      overflow: scroll;
+    }
+
+    a {
+      display: block;
+      width: 100px;
+      line-height: 44px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 16px;
+      text-decoration: none;
+      background-color: #333;
+      color: #fff
+    }
+
+    li {
+      list-style: none;
+    }
+
+    li>p {
+      display: inline-block;
+      background-color: #666;
+      border-radius: 4px;
+      padding:10px;
+      box-shadow: 0 2px 8px -1px #ccc;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    li>span {
+      margin-left:20px;
+      display: inline-block;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+
 </head>
+
 <body>
-
-  <div class="box">
-
-  
+  <div class="content">
+    <ul></ul>
   </div>
-  <script type="text/javascript">
-    $.post("/get_json",{qqq:"i love express"},function(res){
-      console.log(res);
-    },"text");
-    $.get("/get_type",{laowang:"heihiehei"},function(res){
-      console.log(res);
-    },"text");
-    $(".box").load("/load_html")
-  </script>
+
+  <textarea name="name" rows="8" cols="80"></textarea>
+  <a href="#">发送</a>
 </body>
+
+<script type="text/javascript">
+const date = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+$.get("/init_data",function(res){
+  res.forEach(vals=>{
+    ul.append(generate_html(vals.val,date));
+  })
+})
+
+  function generate_html(val,date) {
+    return `
+    <li><p>${val}</p><span>${date}</span></li>
+  `
+  }
+  const ul = $("ul");
+  const btn = $("a");
+  const textarea = $("textarea");
+
+  btn.click(event => {
+    const val = textarea.val();
+    textarea.val("");
+    $.post("/",{val});
+    ul.append(generate_html(val, date));
+  })
+
+</script>
+
 </html>
