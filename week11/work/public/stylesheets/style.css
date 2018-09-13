@@ -1,0 +1,13 @@
+.uploadPic {
+  min-width: 100px;
+}
+
+.content {
+  margin-top: 20px;
+}
+
+.line {
+  margin-top: 10px;
+  height: 1px;
+  background-color: #e6e6e6;
+}
