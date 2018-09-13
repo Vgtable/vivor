@@ -6,26 +6,73 @@
     <%= title %>
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
 <body>
   <div class="container">
-      <nav class="nav .justify-content-center col">
-        <a class="nav-link active" href="#">首页</a>
-        <a class="nav-link" href="#">产品</a>
-        <a class="nav-link" href="#">关于我们</a>
-        <a class="nav-link disabled" href="#">敬请期待</a>
-      </nav>
+    <nav class="nav .justify-content-center col">
+      <a class="nav-link active" href="#">首页</a>
+      <a class="nav-link" href="#">产品</a>
+      <a class="nav-link" href="#">关于我们</a>
+      <a class="nav-link disabled" href="#">敬请期待</a>
+    </nav>
+    <div class="custom-file">
+      <input type="file" class="custom-file-input uploadPic" id="customFile">
+      <label class="btn btn-primary realFile" for="customFile">上传相册</label>
+    </div>
+
     <div class="content row">
-        <div class="btn btn-primary uploadPic">上传照片</div>
-        <div class="col-12 line"></div>
+      <div class="col-12 line"></div>
     </div>
   </div>
 </body>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../javascripts/readfile.js"></script>
+
+<script>
+  const box = $(".content");
+  const uploadPic = $(".uploadPic");
+  uploadPic.change(createReader(readImage));
+  function readImage(img) {
+    fetch("/addPic",{
+      method:"POST",
+      headers:{
+         'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({"img":img.src})
+    }).then(res=>res.json()).then(function(result){
+      console.log(result);
+      box.append(addPicture(result.img));
+    })
+    fetch("/",{
+      method:"GET",
+      headers:{
+         'Content-Type': 'application/json'
+      },
+    }).then(res=>res.json()).then(function(result){
+      result.forEach(vals=>{
+        box.append(addPicture(vals.img))
+      })
+    })
+    function addPicture(data){
+      return`
+        <div class="col-1 picBox">
+          <img src=${data} alt="照片" />
+        </div>
+      `
+    }
+    // $.post("/addPic",img,function(res){
+    //   const picBox = $("<div>").attr("class","col-1 picBox");
+    //   const box = $(".content");
+    //   picBox.append(res);
+    //   box.append(picBox);
+    // })
+  }
+
+</script>
 
 </html>
